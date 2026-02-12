@@ -20,7 +20,7 @@ services:
     container_name: knfc-backend-spring-boot-2
     restart: always
     ports:
-      - "8093:8091"
+      - "8093:8093"
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
