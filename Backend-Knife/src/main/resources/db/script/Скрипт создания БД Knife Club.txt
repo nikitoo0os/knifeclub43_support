@@ -1,0 +1,78 @@
+CREATE TABLESPACE knfc_ts LOCATION 'D:/knf_DataBase_New';
+CREATE DATABASE knfc TABLESPACE knfc_ts;
+\c knfc;
+CREATE SCHEMA knfc;
+SET search_path = knfc;
+
+create table knfc.role
+(id smallserial not null primary key,
+name varchar(50));
+
+create table knfc.person
+(id serial not null primary key,
+login varchar(30) not null,
+password text,
+token text,
+id_role smallint,
+FOREIGN KEY (id_role) REFERENCES role(id) ON UPDATE CASCADE ON DELETE RESTRICT);
+
+create table knfc.reference
+(id serial not null primary key,
+name varchar(150) not null,
+description text,
+url_img text,
+duration integer not null,
+time_start varchar(5) not null,
+time_end varchar(5) not null,
+time_start_holiday varchar(5) not null,
+time_end_holiday varchar(5) not null,
+price numeric CHECK (price > 0),
+status_visible boolean DEFAULT true);
+
+create table knfc.birthday
+(id serial not null primary key,
+name varchar(150) not null,
+description_price text,
+description_reference text,
+url_img text,
+status boolean DEFAULT true);
+
+create table knfc.restroom
+(id smallserial not null primary key,
+name varchar(150) not null,
+url_img text);
+
+create table knfc.reserv_restroom
+(id serial not null primary key,
+time varchar(20) not null,
+date date not null,
+description text,
+id_restroom smallint not null,
+FOREIGN KEY (id_restroom) REFERENCES restroom(id) ON UPDATE CASCADE ON DELETE RESTRICT);
+
+create table knfc.reserv_reference
+(id bigserial not null primary key,
+time varchar(5),
+date date,
+phone varchar(16),
+email varchar(50),
+fio_client varchar(50),
+status boolean DEFAULT NULL,
+description text,
+description_admin text,
+date_bron timestamp,
+date_confirm_cancel timestamp,
+closedbron boolean DEFAULT FALSE,
+id_reference integer not null,
+count_person smallint,
+FOREIGN KEY (id_reference) REFERENCES reference(id) ON UPDATE CASCADE ON DELETE RESTRICT);
+
+create table knfc.img_reference
+(id serial not null primary key,
+url_img text);
+
+CREATE UNIQUE INDEX unique_reservref ON reserv_reference (date, time, id_reference) WHERE status IS NOT FALSE;
+
+INSERT INTO role(name) VALUES ('Админ');
+INSERT INTO role(name) VALUES ('Тренер');
+INSERT INTO person(login, id_role) VALUES ('kukold', 1);

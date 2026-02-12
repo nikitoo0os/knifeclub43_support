@@ -1,0 +1,89 @@
+<form>
+    <mat-dialog-content>
+        <div class="inf_block">
+            <h5 class="text-center">Услуга</h5>
+        </div>
+        <hr>
+        <mat-form-field>
+            <mat-label>Название</mat-label>
+            <input matInput [formControl]="name" required [(ngModel)]="reference.name" [maxlength]="150" name="name">
+            <mat-icon matSuffix>comment</mat-icon>
+            <mat-error>{{errorMessage}}</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Ссылка</mat-label>
+            <input matInput [(ngModel)]="reference.url" name="url">
+            <mat-icon matSuffix>short_text</mat-icon>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Описание</mat-label>
+            <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" [(ngModel)]="reference.description" name="description"></textarea>
+            <mat-icon matSuffix>comment</mat-icon>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Описание в карточке</mat-label>
+            <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" [(ngModel)]="reference.descriptionClient" name="descriptionClient"></textarea>
+            <mat-icon matSuffix>comment</mat-icon>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Минимальная цена (от)</mat-label>
+            <input type="number" [formControl]="price" matInput required [(ngModel)]="reference.price" name="price">
+            <mat-icon matSuffix>attach_money</mat-icon>
+            <mat-error>{{errorMessage}}</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Длительность одного занятия (в минутах) для алгоритма</mat-label>
+            <input [maxlength]="3" [formControl]="duration" type="number" matInput required [(ngModel)]="reference.duration" name="duration">
+            <mat-icon matSuffix>attach_money</mat-icon>
+            <mat-error>{{errorMessage}}</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Длительность одного занятия (в минутах) для клиента</mat-label>
+            <input [maxlength]="3" [formControl]="durationClient" type="number" matInput required [(ngModel)]="reference.durationClient" name="durationClient">
+            <mat-icon matSuffix>attach_money</mat-icon>
+            <mat-error>{{errorMessage}}</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Время бронирования (в минутах)</mat-label>
+            <input [maxlength]="3" [formControl]="reservDuration" type="number" matInput required [(ngModel)]="reference.reservDuration" name="reservDuration">
+            <mat-icon matSuffix>attach_money</mat-icon>
+            <mat-error>{{errorMessage}}</mat-error>
+        </mat-form-field>
+        <mat-label>Будние дни</mat-label>
+        <div class="flex gap-2">
+            <mat-form-field>
+                <mat-label>Время начала</mat-label>
+                <input [mask]="'00:00'" [formControl]="timeStartFormControl" matInput required [(ngModel)]="reference.timeStart" name="timeStart" [maxlength]="5">
+                <mat-error>{{errorMessage}}</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Время окончания</mat-label>
+                <input [mask]="'00:00'" [formControl]="timeEndFormControl" matInput required [(ngModel)]="reference.timeEnd" name="timeEnd" [maxlength]="5">
+                <mat-error>{{errorMessage}}</mat-error>
+            </mat-form-field>
+        </div>
+        <mat-label>Выходные дни (праздники)</mat-label>
+        <div class="flex gap-2">
+            <mat-form-field>
+                <mat-label>Время начала</mat-label>
+                <input [mask]="'00:00'" [formControl]="timeStartHolidayFormControl" matInput required [(ngModel)]="reference.timeStartHoliday" name="timeStartHoliday" [maxlength]="5">
+                <mat-error>{{errorMessage}}</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Время окончания</mat-label>
+                <input [mask]="'00:00'" [formControl]="timeEndHolidayFormControl" matInput required [(ngModel)]="reference.timeEndHoliday" name="timeEndHoliday" [maxlength]="5">
+                <mat-error>{{errorMessage}}</mat-error>
+            </mat-form-field>
+        </div>
+        <mat-slide-toggle [checked]="reference.status" (change)="onChange($event)">Отображение для клиента</mat-slide-toggle>
+        <img class="mt-4 max-w-[256px] mx-auto overflow-hidden rounded-lg shadow-md" src="{{reference.url}}">
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button cdkFocusInitial mat-button class="button-bron" (click)="onBronClick()">
+            Сохранить
+        </button>
+        <button mat-button (click)="onNoClick()">
+            Отменить
+        </button>
+    </mat-dialog-actions>
+  </form>

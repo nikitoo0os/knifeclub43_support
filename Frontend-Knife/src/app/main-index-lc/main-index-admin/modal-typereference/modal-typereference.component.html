@@ -1,0 +1,38 @@
+<form>
+    <mat-dialog-content>
+        <div class="inf_block">
+        <h5 class="text-center">Вид услуги</h5>
+        </div>
+        <hr>
+        <mat-form-field>
+            <mat-label>Название</mat-label>
+            <input matInput required [(ngModel)]="birthday.name" name="name">
+            <mat-icon matSuffix>comment</mat-icon>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Описание цены</mat-label>
+            <textarea matInput placeholder="Описание" cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" required [(ngModel)]="birthday.description_price" name="description_price"></textarea>
+            <mat-icon matSuffix>comment</mat-icon>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Описание услуги</mat-label>
+            <textarea matInput placeholder="Описание" cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" required [(ngModel)]="birthday.description_reference" name="description_reference"></textarea>
+            <mat-icon matSuffix>comment</mat-icon>
+        </mat-form-field>
+        <!-- <mat-form-field>
+            <mat-label>Ссылка</mat-label>
+            <input matInput [(ngModel)]="birthday.url" name="url">
+            <mat-icon matSuffix>short_text</mat-icon>
+        </mat-form-field> -->
+        <mat-slide-toggle [checked]="birthday.status" (change)="onChange($event)">Отображение для клиента</mat-slide-toggle>
+        <!-- <img class="mt-4 max-w-[256px] mx-auto overflow-hidden rounded-lg shadow-md" src="{{birthday.url}}" (error)="birthday.url = ''"> -->
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button cdkFocusInitial mat-button class="button-bron" (click)="onBronClick()">
+            Сохранить
+        </button>
+        <button mat-button (click)="onNoClick()">
+            Отменить
+        </button>
+    </mat-dialog-actions>
+</form>

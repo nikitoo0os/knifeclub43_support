@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: 
+Host: https://knifeclub43.ru
+Sitemap: https://knifeclub43.ru/sitemap.xml

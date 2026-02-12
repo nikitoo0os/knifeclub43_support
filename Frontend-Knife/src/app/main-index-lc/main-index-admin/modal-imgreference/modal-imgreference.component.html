@@ -1,0 +1,22 @@
+<form>
+    <mat-dialog-content>
+        <div class="inf_block">
+            <h5 class="text-center">Фото к услугам</h5>
+        </div>
+        <hr>
+        <mat-form-field>
+            <mat-label>Ссылка</mat-label>
+            <input matInput required [(ngModel)]="imgReference.urlImg" name="url">
+            <mat-icon matSuffix>short_text</mat-icon>
+        </mat-form-field>
+        <img src="{{imgReference.urlImg}}" (error)="imgReference.urlImg = ''">
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button cdkFocusInitial mat-button class="button-bron" (click)="onBronClick()">
+            Сохранить
+        </button>
+        <button mat-button (click)="onNoClick()">
+            Отменить
+        </button>
+    </mat-dialog-actions>
+</form>

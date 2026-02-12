@@ -1,0 +1,175 @@
+<div class="inf_block">
+    <div class="header">
+        <h4>Топ бронируемых услуг</h4>
+    </div>
+    <div *ngFor="let bron of topbron; let j = index">
+        <h3>- {{bron.reference?.name}}: {{bron.count}}</h3>
+    </div>
+</div>
+<hr>
+<h1>Для добавления Enter (текста с новой строки) необходимо добавить в текст < br > без пробелов.<br>Жирный цвет или курсив работает как в HTML с помощью тега < b > или < i > (в конце нужно их закрыть ОБЯЗАТЕЛЬНО!!!). Работает только на описание.</h1>
+<hr>
+<div class="inf_block">
+    <div class="header">
+        <h4>Праздники</h4>
+        <h4 class="hover:text-cyan-400 cursor-pointer z-[2]" (click)="openDialogBirthday(null)">+Добавить</h4>
+    </div>
+    <div class="tables">
+        <table #table_birthdays mat-table [dataSource]="dataSourceBirthdays" matSort>
+
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">Название</th>
+                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="description_price">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by description_price">Цена</th>
+                <td mat-cell *matCellDef="let element"> {{element.description_price}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="description_reference">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by description_reference">Услуги</th>
+                <td mat-cell *matCellDef="let element"> {{element.description_reference}} </td>
+            </ng-container>
+                        
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef>Действия</th>
+                <td mat-cell *matCellDef="let element" fxLayoutGap="10px">
+                    <button mat-mini-fab color="primary" (click)="openDialogBirthday(element)"><mat-icon>edit</mat-icon></button>
+                    <button mat-mini-fab color="warn" (click)="delBirthday(element)"><mat-icon>delete</mat-icon></button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsBirthdays"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsBirthdays"></tr>
+        </table>
+    </div>
+</div>
+<hr>
+<div class="inf_block">
+    <div class="header">
+        <h4>Услуги</h4>
+        <h4 class="hover:text-cyan-400 cursor-pointer" (click)="openDialogReference(null)">+Добавить</h4>
+    </div>
+    <div class="tables">
+        <table #table_references mat-table [dataSource]="dataSourceReferences" matSort>
+
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">Название</th>
+                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+
+            <!-- <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by description">Описание</th>
+                <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+            </ng-container> -->
+
+            <ng-container matColumnDef="price">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by price">Цена</th>
+                <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+            </ng-container>
+                        
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef>Действия</th>
+                <td mat-cell *matCellDef="let element" fxLayoutGap="5px">
+                    <button mat-mini-fab color="primary" (click)="openDialogReference(element)"><mat-icon>edit</mat-icon></button>
+                    <button mat-mini-fab color="warn" (click)="delReference(element)"><mat-icon>delete</mat-icon></button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsReferences"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsReferences;"></tr>
+        </table>
+    </div>
+</div>
+<hr>
+<div class="inf_block">
+    <div class="header">
+        <h4>Комнаты отдыха</h4>
+        <h4 class="hover:text-cyan-400 cursor-pointer" (click)="openDialogRestroom(null)">+Добавить</h4>
+    </div>
+    <div class="tables">
+        <table #table_restrooms mat-table [dataSource]="dataSourceRestrooms" matSort>
+
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">Название</th>
+                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef>Действия</th>
+                <td mat-cell *matCellDef="let element" fxLayoutGap="5px">
+                    <button mat-mini-fab color="primary" (click)="openDialogRestroom(element)"><mat-icon>edit</mat-icon></button>
+                    <button mat-mini-fab color="warn" (click)="delRestroom(element)"><mat-icon>delete</mat-icon></button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsRestrooms"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsRestrooms;"></tr>
+        </table>
+    </div>
+</div>
+<hr>
+<div class="inf_block">
+    <div class="header">
+        <h4>Пользователи</h4>
+        <h4 class="hover:text-cyan-400 cursor-pointer" (click)="openDialogPerson(null)">+Добавить</h4>
+    </div>
+    <div class="tables">
+        <table #table_persons mat-table [dataSource]="dataSourcePersons" matSort>
+
+            <ng-container matColumnDef="login">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">Логин</th>
+                <td mat-cell *matCellDef="let element"> {{element.login}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="role">
+                <th mat-header-cell *matHeaderCellDef>Роль</th>
+                <td mat-cell *matCellDef="let element"> {{element.idRole.name}} </td>
+            </ng-container>
+                        
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef>Действия</th>
+                <td mat-cell *matCellDef="let element" fxLayoutGap="5px">
+                    <button mat-mini-fab color="primary" (click)="openDialogPerson(element)"><mat-icon>edit</mat-icon></button>
+                    <button mat-mini-fab color="warn" (click)="delPerson(element)"><mat-icon>delete</mat-icon></button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsPersons"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsPersons;"></tr>
+        </table>
+    </div>
+</div>
+<hr>
+<div class="inf_block">
+    <div class="header">
+        <h4>Фотогалерея</h4>
+        <h4 class="hover:text-cyan-400 cursor-pointer" (click)="openDialogImgReference(null)">+Добавить</h4>
+    </div>
+    <div class="tables">
+        <table mat-table [dataSource]="dataSourceImgReference" matSort>
+
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Фото</th>
+                <td mat-cell *matCellDef="let element"><img class="max-h-[100px] max-w-[100px]" src="{{element.urlImg}}"></td>
+            </ng-container>
+
+            <!-- <ng-container matColumnDef="url">
+                <th mat-header-cell *matHeaderCellDef>Файл</th>
+                <td mat-cell *matCellDef="let element"> {{element.urlImg}} </td>
+            </ng-container> -->
+                        
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef>Действия</th>
+                <td mat-cell *matCellDef="let element" fxLayoutGap="5px">
+                    <button mat-mini-fab color="primary" (click)="openDialogImgReference(element)"><mat-icon>edit</mat-icon></button>
+                    <button mat-mini-fab color="warn" (click)="delImgReference(element)"><mat-icon>delete</mat-icon></button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsImgReference"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsImgReference;"></tr>
+        </table>
+    </div>
+</div>

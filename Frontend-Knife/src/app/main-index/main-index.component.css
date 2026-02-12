@@ -1,0 +1,183 @@
+p {
+    @apply font-normal text-white
+}
+h1 {
+    @apply text-black md:text-6xl font-bold text-4xl
+}
+h2 {
+    @apply text-black md:text-4xl text-2xl
+}
+h3 {
+    @apply text-black md:text-xl text-xs
+}
+
+.about {
+    @apply bg-[url('/assets/landing_fon.jpg')] min-h-screen bg-no-repeat bg-center bg-scroll bg-cover
+}
+.about-gradient {
+    background-image: -webkit-linear-gradient(top, rgba(148, 99, 54, 0.7), rgba(0, 0, 0, 0.5));
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+.about h1 {
+    @apply font-bold text-white text-6xl md:text-[100px] lg:text-[140px]
+}
+.about h2 {
+    @apply text-white text-lg md:text-xl lg:text-3xl
+}
+.about button {
+    @apply bg-orange-500 border-none rounded-lg mx-auto px-10 py-2 text-lg md:text-xl lg:text-3xl text-white hover:shadow-2xl hover:bg-orange-400 transition-transform hover:scale-105
+}
+.information {
+    @apply bg-white lg:py-[150px] md:py-[120px] sm:py-[90px] py-[50px] min-h-[1800px] md:min-h-[1600px]
+}
+.information h1 {
+    @apply text-3xl md:text-5xl
+}
+.information h2 {
+    @apply text-xl md:text-3xl
+}
+.information .image {
+    @apply content-center
+}
+.information .texts {
+    @apply gap-y-2 md:gap-y-6 lg:gap-y-10 grid
+}
+.references {
+    @apply bg-gray-300 lg:py-[150px] md:py-[120px] sm:py-[90px] py-[50px]
+}
+/* .references .icons { @apply flex flex-wrap } */
+.references .icons { @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-2 }
+/* .references img {
+    @apply mx-0 min-w-[50px] min-h-[50px] max-w-[95px] max-h-[95px] rounded-lg
+} */
+.references h2 {
+    @apply text-black md:text-3xl
+}
+.references .reference {
+    @apply flex flex-col overflow-hidden rounded-lg hover:bg-gray-400 cursor-pointer gap-y-10
+}
+.references .referencetop {
+    @apply flex flex-col overflow-hidden rounded-lg hover:bg-blue-400 cursor-pointer gap-y-10
+}
+.photogalery {
+    @apply bg-black lg:py-[150px] md:py-[120px] sm:py-[90px] py-[50px] lg:min-h-[800px] min-h-[700px]
+}
+.photogalery img {
+    @apply mx-auto rounded-lg
+}
+.photogalery h1 {
+    @apply text-white
+}
+.photogalery h2 {
+    @apply text-white
+}
+.orange-block {
+    @apply bg-orange-500 lg:py-[150px] md:py-[120px] sm:py-[90px] py-[50px]
+}
+.orange-block h1 {
+    @apply text-white md:w-[70%]
+}
+.birthday {
+    @apply bg-gray-200 lg:py-[150px] md:py-[120px] sm:py-[90px] py-[50px] 
+}
+.birthday button {
+    @apply bg-orange-500 px-[30px] md:text-xl text-lg h-[55px] font-bold text-white hover:bg-orange-400
+}
+.birthday .card {
+    @apply bg-white py-[30px] px-[30px] text-center rounded-lg flex flex-col gap-y-6 hover:shadow-xl mx-auto transition-transform hover:scale-y-[1.02] hover:scale-x-[1.02]
+}
+.birthday .card h1 {
+    @apply font-bold text-black md:text-3xl text-2xl
+}
+.birthday .card h2 {
+    @apply text-black font-bold md:text-xl text-lg
+}
+.birthday .card h3 {
+    @apply text-gray-700 md:text-xl text-lg
+}
+.bron {
+    @apply bg-white lg:py-[150px] md:py-[120px] sm:py-[90px] py-[50px]
+}
+.bron button {
+    @apply bg-orange-500 px-[30px] text-lg h-[55px] font-bold hover:shadow-lg hover:bg-orange-400
+}
+
+.main-block {
+    @apply mx-auto max-w-[1200px] px-4 md:px-6 xl:px-0
+}
+
+mat-card {
+    @apply m-[15px] shadow-lg transition-transform hover:scale-110
+}
+mat-card mat-card-content p {
+    @apply font-normal text-black
+}
+mat-card mat-card-actions button {
+    @apply py-1 px-5 text-sm text-white bg-orange-500 border-none rounded-lg shadow-lg cursor-pointer transition-opacity hover:bg-orange-400
+}
+
+.hat {
+    /* @apply absolute md:top-[-20px] md:left-[-10px] md:w-[100px] lg:w-[70px] lg:left-[100px] left-[35px] w-[40px] top-[-10px] */
+    @apply absolute lg:left-[-10px] lg:w-[90px] lg:top-[-20px] md:left-[100px] md:w-[60px] md:top-[-10px] w-[37px] left-[-15px] top-[-5px] 
+  }
+
+  .text-container {
+    position: relative;
+    display: inline-block; /* Позволяет контейнеру занимать только необходимое пространство */
+  }
+
+  @keyframes garland {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+  }
+  
+  .animate-garland {
+    animation: garland 3s linear infinite;
+    background-size: 200% 200%;
+    font-size: 20px /* 24px */;
+    line-height: 28px /* 32px */;
+  }
+
+  @media (min-width: 768px) {
+    .animate-garland {
+        font-size: 2.25rem /* 36px */;
+        line-height: 2.5rem /* 40px */;
+    }
+}
+
+.garland2-container {
+    @apply inline-block
+}
+
+.garland-container {
+    @apply absolute top-10 lg:top-0
+}
+
+
+.snow-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  
+  .snowflake {
+    position: absolute;
+    background-color: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    pointer-events: none;
+    animation-name: fall; /* Название анимации */
+    animation-timing-function: linear; /* Линейная анимация */
+    animation-iteration-count: infinite; /* Бесконечное повторение */
+  }
+  
+  @keyframes fall {
+    to {
+      transform: translateY(100vh);
+    }
+  }

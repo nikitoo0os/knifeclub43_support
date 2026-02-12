@@ -1,0 +1,29 @@
+<form>
+  <mat-dialog-content>
+    <div class="inf_block">
+      <h5 class="text-center">Бронирование лаунжа</h5>
+    </div>
+    <hr>
+    <mat-form-field class="w-full">
+      <mat-label>Описание</mat-label>
+      <input matInput [(ngModel)]="reservRestroom.description" name="description">
+      <mat-icon matSuffix>short_text</mat-icon>
+    </mat-form-field>
+    <mat-form-field class="w-full">
+      <mat-label>Время</mat-label>
+      <input matInput [formControl]="timeFormControl" required maxlength="20" [(ngModel)]="reservRestroom.time" name="time">
+      <mat-icon matSuffix>access_time</mat-icon>
+      <mat-error>
+        {{errorMessageTime}}
+      </mat-error>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button cdkFocusInitial class="button-bron" (click)="onBronClick()">
+      Сохранить
+    </button>
+    <button mat-button (click)="onNoClick()">
+      Отменить
+    </button>
+  </mat-dialog-actions>
+</form>

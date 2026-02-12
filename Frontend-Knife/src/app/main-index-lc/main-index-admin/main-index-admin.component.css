@@ -1,0 +1,6 @@
+.header {
+    @apply flex gap-4
+}
+.tables {
+    @apply overflow-auto max-h-[300px]
+}

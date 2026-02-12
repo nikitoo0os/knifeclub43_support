@@ -1,0 +1,9 @@
+.header {
+    @apply pt-[78px] flex items-center justify-between bg-gradient-to-b from-amber-500 to-orange-300 border-b-2 border-orange-300
+}
+a {
+    @apply text-xl font-bold tracking-tight text-white
+}
+nav {
+    @apply w-full
+}

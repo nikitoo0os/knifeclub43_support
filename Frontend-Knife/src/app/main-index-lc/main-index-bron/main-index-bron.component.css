@@ -1,0 +1,39 @@
+.komnata_row_header {
+    @apply border-b border-zinc-300 flex gap-2
+}
+.komnata_row_header h4 {
+    @apply text-lg font-bold tracking-tight text-zinc-700
+}
+.komnata_row {
+    @apply border-b border-zinc-300
+}
+.komnata_row h4 {
+    @apply text-lg font-bold tracking-tight text-zinc-700
+}
+button {
+    @apply bg-zinc-300 px-1 font-medium text-zinc-700 rounded-md hover:bg-gray-200 z-[2]
+}
+.green-button {
+    @apply bg-green-400 px-1 font-medium text-zinc-700 rounded-md hover:bg-green-300 z-[2]
+}
+.blue-button {
+    @apply bg-blue-500 px-1 font-medium text-zinc-700 rounded-md hover:bg-blue-400 z-[2]
+}
+.orange-button {
+    @apply bg-orange-400 px-1 font-medium text-zinc-700 rounded-md hover:bg-orange-300 z-[2]
+}
+.red-button {
+    @apply bg-red-500 px-1 font-medium text-zinc-700 rounded-md hover:bg-red-400 z-[2]
+}
+.cyan-button {
+    @apply bg-cyan-400 px-1 font-medium text-zinc-700 rounded-md hover:bg-cyan-300 z-[2]
+}
+.mat-column-action {
+    @apply max-w-[100px]
+}
+.mat-column-time {
+    @apply max-w-[80px]
+}
+h5 {
+    @apply text-2xl text-black
+}

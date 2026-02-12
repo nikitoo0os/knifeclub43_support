@@ -1,0 +1,11 @@
+<div class="header">
+    <nav mat-tab-nav-bar *ngIf="authServ.getAuthorizationAdmin()" [tabPanel]="tabPanel">
+        <a mat-tab-link routerLink="./reservation" routerLinkActive="active-link">Бронирование</a>
+        <a mat-tab-link routerLink="./administration" routerLinkActive="active-link">Администрирование</a>
+    </nav>
+</div>
+<main [@fadeInOut]>
+    <mat-tab-nav-panel #tabPanel>
+        <router-outlet *ngIf="authServ.getAuthorization()"></router-outlet>
+    </mat-tab-nav-panel>
+</main>

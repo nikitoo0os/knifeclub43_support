@@ -1,0 +1,225 @@
+<div class="flex justify-between">
+    <mat-form-field class="w-[150px]">
+        <mat-label>Выбранная дата</mat-label>
+        <input readonly [value]="selectedDate" (dateChange)="onSelect($event)" matInput [matDatepicker]="picker">
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <button mat-button (click)="exit()">Выйти</button>
+</div>
+<div class="grid gap-y-1">
+    <div class="flex gap-1"><button disabled class="green-button">12:00</button><h1> - подтвержденная заявка</h1></div>
+    <div class="flex gap-1"><button disabled class="blue-button">12:00</button><h1> - закрытое время автоматически, клиентам недоступна бронь</h1></div>
+    <div class="flex gap-1"><button disabled class="red-button">12:00</button><h1> - закрытая бронь с клиентом</h1></div>
+    <div class="flex gap-1"><button disabled class="cyan-button">12:00</button><h1> - закрытая бронь из-за технических причин</h1></div>
+    <div class="flex gap-1"><button disabled class="orange-button">12:00</button><h1> - неподтвержденная бронь</h1></div>
+    <div class="flex gap-1"><button disabled>12:00</button><h1> - свободное время</h1></div>
+</div>
+<hr>
+<h5 class="text-start">Расписание занятий на {{ selectedDate | date:'d MMMM, EE' }}</h5>
+<div *ngIf="authService.getAuthorizationAdmin()">
+    <ul class="text-left">Описание кнопок:
+        <li>Сохранить - сохраняет введенную или измененную инфомацию в блоках;</li>
+        <li>Отменить бронь - отменяет текущую бронь, ставит статус "Отклонен";</li>
+        <li>Закрыть бронь - (ЕСЛИ СЕРАЯ ЯЧЕЙКА) закрывает бронь для клиентов по технической причине, поля не заполняются и не выводится в таблицу, (ЕСЛИ СИНЯЯ ЯЧЕЙКА) закрывает бронь для клиентов, поля заполняются и выводятся в таблицу;</li>
+    </ul>
+</div>
+<div class="inf_block">
+        <div *ngFor="let reference_timeslot of references_timeslots" class="komnata_row">
+            <h4>{{reference_timeslot.reference!.name}}</h4>
+            <div>
+                <div *ngIf="selectedDate.getDay() == 6 || selectedDate.getDay() == 0" class="gap-1 mb-2">
+                    <div *ngFor="let timeSlot of reference_timeslot.timeslotsHoliday, let i = index" class="inline-block mr-1 mb-1">
+                        <button 
+                            [ngClass]="{'green-button': checkValueExistGreen(timeSlot, reference_timeslot.reference!), 
+                                'blue-button': checkValueExistBlue(timeSlot, reference_timeslot.reference!),
+                                'red-button': checkValueExistRed(timeSlot, reference_timeslot.reference!),
+                                'cyan-button': checkValueExistCyan(timeSlot, reference_timeslot.reference!),
+                                'orange-button': checkValueExistOrange(timeSlot, reference_timeslot.reference!)}" 
+                            [disabled]="!authService.getAuthorizationAdmin() && checkValueForTrener(timeSlot, reference_timeslot.reference!)"
+                            (click)="openDialogReservReference(i, reference_timeslot)">{{ timeSlot }}
+                        </button>
+                    </div>
+                </div>
+                <div *ngIf="selectedDate.getDay() > 0 && selectedDate.getDay() < 6" class="gap-1 mb-2">
+                    <div *ngFor="let timeSlot of reference_timeslot.timeslots, let i = index" class="inline-block mr-1 mb-1">
+                        <button 
+                            [ngClass]="{'green-button': checkValueExistGreen(timeSlot, reference_timeslot.reference!), 
+                                'blue-button': checkValueExistBlue(timeSlot, reference_timeslot.reference!),
+                                'red-button': checkValueExistRed(timeSlot, reference_timeslot.reference!),
+                                'cyan-button': checkValueExistCyan(timeSlot, reference_timeslot.reference!),
+                                'orange-button': checkValueExistOrange(timeSlot, reference_timeslot.reference!)}" 
+                            [disabled]="!authService.getAuthorizationAdmin() && checkValueForTrener(timeSlot, reference_timeslot.reference!)"
+                            (click)="openDialogReservReference(i, reference_timeslot)">{{ timeSlot }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+<h5 class="text-start mt-2">Комнаты отдыха</h5>
+<div class="gap-y-2 grid">
+        <div *ngFor="let restroom of restrooms" class="inf_block"> 
+            <div class="komnata_row_header">
+                <h4>{{restroom.name}}</h4>
+                <h4 *ngIf="authService.getAuthorizationAdmin()" class="cursor-pointer z-[2]" (click)="openDialogReservRestroom(restroom)">+Добавить</h4>
+            </div>
+            <div *ngFor="let reservRestroom of reservRestrooms" class="">
+                <div class="komnata_row" *ngIf="reservRestroom.restroom?.id == restroom.id">
+                    <div class="my-1 flex gap-3">
+                        <h1>{{reservRestroom.time}}</h1>
+                        <p *ngIf="authService.getAuthorizationAdmin()" class="cursor-pointer z-[2]" (click)="openDialogReservRestroomEdit(reservRestroom)">Изменить</p>
+                        <p *ngIf="authService.getAuthorizationAdmin()" class="cursor-pointer z-[2]" (click)="delReservRestroom(reservRestroom)">Удалить</p>
+                    </div>
+                    <h4>{{reservRestroom.description}}</h4>
+                </div>
+            </div>
+        </div>
+</div>
+
+<h5 class="text-start mt-2" *ngIf="authService.getAuthorizationAdmin()">Закрытие клуба</h5>
+<div class="gap-y-2 grid" *ngIf="authService.getAuthorizationAdmin()">
+        <div class="inf_block"> 
+            <div class="komnata_row_header">
+                <h4 class="cursor-pointer z-[2]" (click)="openDialogCloseClub()">+Добавить</h4>
+            </div>
+            <div *ngFor="let reservblock of reservBlocks">
+                <div class="komnata_row">
+                    <div class="my-1 flex gap-3">
+                        <h1>{{reservblock.timeStartBlock}} - {{reservblock.timeEndBlock}}</h1>
+                        <p class="cursor-pointer z-[2]" (click)="openDialogCloseClubEdit(reservblock)">Изменить</p>
+                        <p class="cursor-pointer z-[2]" (click)="delReservBlock(reservblock)">Удалить</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+<div *ngIf="authService.getAuthorizationAdmin()">
+    <h5 class="text-start mt-2">Все забронированные услуги на {{ selectedDate | date:'d MMMM, EE' }}</h5>
+    <div class="inf_block">
+        <div class="h-[300px] overflow-auto">
+            <table #table1 mat-table [dataSource]="dataSourceReservReferences" matSort>
+
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef>Действия</th>
+                    <td mat-cell *matCellDef="let element" fxLayoutGap="5px">
+                        <button mat-mini-fab color="primary" (click)="openDialogEditReservReference(element)"><mat-icon>edit</mat-icon></button>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="time">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by time">Время</th>
+                    <td mat-cell *matCellDef="let element"> {{element.time}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="fioClient">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by fioClient">ФИО клиента</th>
+                    <td mat-cell *matCellDef="let element"> {{element.fioClient}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="phone">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by phone">Телефон</th>
+                    <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="email">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by email">Email</th>
+                    <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="reference">
+                    <th mat-header-cell *matHeaderCellDef>Услуга</th>
+                    <td mat-cell *matCellDef="let element"> {{element.reference.name}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by status">Статус</th>
+                    <td mat-cell *matCellDef="let element"> {{(element.status == null) ? 'Ожидает' : (element.status == true) ? 'Бронь' : 'Отклонен'}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumnsReservReferences"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsReservReferences;"></tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div>
+    <div class="flex gap-x-2">
+        <h5 class="text-start mt-2">Поиск по броням</h5>
+        <h5 class="cursor-pointer mt-2 hover:text-blue-700 z-[2]" (click)="getAllReservReferences()">[Показать]</h5>
+        <button class="my-2" title="Помощь" (click)="checkHelp()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-question mx-auto" viewBox="0 0 16 16">
+                <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+            </svg>
+        </button>
+    </div>
+    <div *ngIf="chckHelp">
+        <p class="text-left">Перед поиском нужной информации необходимо загрузить базу бронирований нажатием на кнопку [Показать]. В поле "Фильтр" необходимо ввести нужную информацию для поиска (сам поиск проходит по всем столбцам, кроме столбца "Статус").</p>
+        <ul class="text-left">Описание столбцов:
+            <li>Действия - кнопка, при нажатии открывается окно с более подробной информацией о брони;</li>
+            <li>Дата - дата, на которую бронировал клиент;</li>
+            <li>Время - время, которое забронировал клиент в выбранной им дате;</li>
+            <li>ФИО клиента - информация о клиенте;</li>
+            <li>Телефон и Email - контактная информация клиента;</li>
+            <li>Услуга - название услуги, которую бронировал клиент.</li>
+        </ul>
+    </div>
+    <div class="inf_block">
+        <mat-form-field>
+            <mat-label>Фильтр</mat-label>
+            <input matInput (keyup)="applyFilter($event)">
+        </mat-form-field>
+
+        <div class="h-[300px] overflow-auto">
+            <table #table_reservreferencesall mat-table [dataSource]="dataSourceReservReferencesFilter" matSort>
+
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef>Действия</th>
+                    <td mat-cell *matCellDef="let element" fxLayoutGap="5px">
+                        <button mat-mini-fab color="primary" (click)="openDialogEditReservReferenceFilter(element)"><mat-icon>edit</mat-icon></button>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="date">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by date">Дата</th>
+                    <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="time">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by time">Время</th>
+                    <td mat-cell *matCellDef="let element"> {{element.time}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="fioClient">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by fioClient">ФИО клиента</th>
+                    <td mat-cell *matCellDef="let element"> {{element.fioClient}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="phone">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by phone">Телефон</th>
+                    <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="email">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by email">Email</th>
+                    <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="reference">
+                    <th mat-header-cell *matHeaderCellDef>Услуга</th>
+                    <td mat-cell *matCellDef="let element"> {{element.reference.name}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by status">Статус</th>
+                    <td mat-cell *matCellDef="let element"> {{(element.status == null) ? 'Ожидает' : (element.status == true) ? 'Бронь' : 'Отклонен'}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumnsReservReferencesFilter"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsReservReferencesFilter;"></tr>
+            </table>
+        </div>
+    </div>
+</div>

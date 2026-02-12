@@ -1,0 +1,142 @@
+<!-- <div class="garland-container">
+    <img src="assets/garland.png" class="garland" />
+</div> -->
+<!-- <div class="fixed top-0 left-0 w-full h-full overflow-hidden">
+    <div class="snowflake" *ngFor="let snowflake of snowflakes" [ngStyle]="{
+      'width': snowflake.size,
+      'height': snowflake.size,
+      'left': snowflake.left,
+      'animationDuration': snowflake.duration,
+      'top': snowflake.top
+  }"></div>
+</div> -->
+<div class="about" id="top">
+    <div class="about-gradient">
+        <div class="main-block">
+            <div class="w-[310px] md:w-[770px] grid gap-y-10 text-center mx-auto" [@fadeInOut]>
+                <div class="text-container">
+                    <!-- <img src="assets/santa-hat.png" alt="Santa Hat" class="hat" /> -->
+                    <h1>KNIFE CLUB</h1>
+                </div>
+                <div class="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-yellow-500 to-green-500 animate-garland">
+                    Единственный в Кирове клуб метания ножей и топоров, стрельба из пневматического оружия, луков и арбалетов
+                </div>
+                <button (click)="clickBron()" class="z-[2]">Записаться на тренировку</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="information">
+    <div class="main-block">
+        <div class="flex flex-col-reverse md:grid md:grid-cols-2 mx-auto gap-y-10 md:gap-x-10 py-[20px] md:py-[50px] items-center">
+            <div class="image" *ngIf="showHiddenElementInformation" [@scrollAnimation]>
+                <img src="/assets/123.png" alt="KNIFE CLUB. С нами интересно и разнообразно.">
+            </div>
+            <div class="texts" *ngIf="showHiddenElementInformation" [@scrollAnimation]>
+                <h1>С нами интересно и разнообразно</h1>
+                <h2>Не знаешь как метать ножи? Наши тренеры могут найти подход к каждому и помочь Вам в обучении, а именно: подобрать оптимальное расстояние и идеальный нож для Вас. В нашем арсенале более 20 видов метательного оружия и 5 видов стрелкового.</h2>
+            </div>
+        </div>
+        <div class="flex flex-col md:grid md:grid-cols-2 mx-auto gap-y-10 md:gap-x-10 py-[20px] md:py-[50px] items-center">
+            <div class="texts" *ngIf="showHiddenElementInformation2" [@scrollAnimation]>
+                <h1>С нами не соскучишься</h1>
+                <h2>Хотите весело и с остринкой отметить свой день рождения или провести корпоратив? Тогда вы обратились точно по адресу! Вас ждут незабываемые впечатления от тренировок и уютной лаунж зоны, где вы сможете отдохнуть, задуть свечи и просто поболтать. С нами ваши гости точно не останутся равнодушными.</h2>
+            </div>
+            <div class="image" *ngIf="showHiddenElementInformation2" [@scrollAnimation]>
+                <img src="/assets/321.png" alt="KNIFE CLUB. С нами не соскучишься.">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="photogalery">
+    <div class="main-block block lg:flex lg:justify-between">
+        <div class="sm:max-w-[600px]">
+            <div class="grid gap-y-2 md:gap-y-6 lg:gap-y-10" *ngIf="showHiddenElementPhoto" [@scrollAnimation]>
+                <h1>Фотогалерея</h1>
+                <h2>У нас вы получите не только нереальный выброс адреналина и позитивные эмоции, но и сможете пройти обучение метанию ножей и топоров, стрельбе из пневматики, луков и арбалетов</h2>
+            </div>
+        </div>
+        <div class="flex lg:block overflow-x-auto lg:overflow-y-scroll scrollbar-hide gap-2 lg:max-h-[512px] mt-10 z-[2]">
+            <div *ngFor="let namefile of imgfiles" class="content-center">
+              <div class="inline-block">
+                <div class="min-w-[256px] min-h-[256px] max-h-[480px] max-w-[480px] overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out content-center cursor-pointer">
+                  <img [@fadeInOut] src="{{namefile.urlImg}}" (click)="openImg(namefile)" class="mx-auto">
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="references" id="myDiv">
+    <div class="main-block grid gap-y-[20px] sm:gap-y-[40px] lg:gap-y-[60px]">
+        <h1 *ngIf="showHiddenElementReferences" [@scrollAnimation]>Услуги</h1>
+        <h2 *ngIf="showHiddenElementReferences" [@scrollAnimation]>Чтобы забронировать услугу необходимо выбрать её (нажать на кнопку "Подробнее").</h2>
+        <div class="icons" *ngIf="showHiddenElementReferences" [@scrollAnimation]>
+            <mat-card *ngFor="let reference of references">
+                <mat-card-header>
+                    <div mat-card-avatar class="bg-contain" [ngStyle]="{'background-image': 'url(' + reference.url + ')'}"></div>
+                    <mat-card-title>{{reference.name}}</mat-card-title>
+                    <mat-card-subtitle>от {{reference.price}} ₽</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                    <p [innerHTML]="reference.descriptionClient"></p>
+                    <p>Длительность: {{getDuration(reference.durationClient!)}}.</p>
+                  </mat-card-content>
+                <mat-card-actions>
+                    <button routerLink="reference" [queryParams]="{id: reference.id}" (click)="clickReserv()">Подробнее</button>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+        <div>
+            <router-outlet id="divReserv"></router-outlet>
+        </div>
+    </div>
+</div>
+
+<div class="orange-block">
+    <div class="main-block">
+        <h1 *ngIf="showHiddenElementOrange" [@scrollAnimation]>Устроим яркое и незабываемое мероприятие, на котором вы получите новые ощущения!</h1>
+    </div>
+</div>
+
+<div class="birthday">
+    <!-- <div class="garland2-container">
+        <img src="assets/decoration_1.png" class="garland" />
+    </div> -->
+    <div class="main-block grid gap-y-6 md:gap-y-10">
+        <h1>Праздники в KNIFE CLUB</h1>
+        <h2>Приглашаем вас отметить ваш праздник вместе с KNIFE CLUB!</h2>
+        <h2>Метание ножей и топоров - уникальная активность, которой больше нет в городе! Удиви своих друзей и конечно же себя!</h2>
+        <!-- <div>
+            <h3>* дополнительно можно добавить стрельбу из лука 350р/шт 30 мин, а также любую услугу из прайса!</h3>
+            <h3>! Оплата минимум за 4 человека, даже если планируется мероприятие на меньшее количество человек.</h3>
+            <h3>! Сопровождающие, не участвующие в активностях: 2 человека - бесплатно, за каждого следующего доплата 300 руб.</h3> 
+        </div> -->
+        <div class="z-[2] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:mt-2 lg:mt-6 gap-6 md:gap-4 items-start max-h-[800px] overflow-y-scroll px-4 py-4">
+            <div *ngFor="let birthday of birthdays" class="card">
+                <h1>{{birthday.name}}</h1>
+                <div>
+                    <h2 [innerHTML]="birthday.description_price"></h2>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <h3 [innerHTML]="birthday.description_reference"></h3>
+                </div>
+                <button (click)="clickBronEvent()">Забронировать</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bron" id="bron">
+    <div class="main-block">
+        <div class="mx-auto text-center grid gap-y-6 md:gap-y-6 lg:gap-y-10">
+            <h1>Забронировать праздник или выездное мероприятие</h1>
+                <h2>Для бронирования праздника или выездного мероприятия необходимо позвонить по номеру </h2>
+                <h2 (click)="openIcon('tel:+7 (8332) 79-94-74')" class="z-[2] hover:cursor-pointer hover:text-orange-400">+7 (8332) 79-94-74</h2>
+        </div>
+    </div>
+</div>

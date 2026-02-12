@@ -1,0 +1,39 @@
+<form>
+    <mat-dialog-content>
+      <div class="inf_block">
+        <h5 class="text-center">Закрытие клуба</h5>
+        <h1 *ngIf="data.reservblock!=null && data.reservblock.dateConfirm!=null" class="text-center">Сохранение: {{data.reservblock.dateConfirm | date:'dd MMM yyyy, H:mm'}}</h1>
+      </div>
+      <hr>
+      <!-- <mat-form-field class="w-full">
+        <mat-label>Время</mat-label>
+        <input matInput [formControl]="timeFormControl" required maxlength="20" [(ngModel)]="reservRestroom.time" name="time">
+        <mat-icon matSuffix>access_time</mat-icon>
+        <mat-error>
+          {{errorMessageTime}}
+        </mat-error>
+      </mat-form-field> -->
+      <mat-form-field appearance="fill">
+        <mat-label>Введите время начала закрытия</mat-label>
+        <input [mask]="'00:00'" matInput [formControl]="timeFormControl" required maxlength="5" [(ngModel)]="reservblock.timeStartBlock" placeholder="00:00"/>
+        <mat-error>
+          {{errorMessageTime}}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Введите время окончания закрытия</mat-label>
+        <input [mask]="'00:00'" matInput [formControl]="timeFormControl2" required maxlength="5" [(ngModel)]="reservblock.timeEndBlock" placeholder="23:59"/>
+        <mat-error>
+          {{errorMessageTime}}
+        </mat-error>
+      </mat-form-field>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button cdkFocusInitial class="button-bron" (click)="onBronClick()">
+        Сохранить
+      </button>
+      <button mat-button (click)="onNoClick()">
+        Отменить
+      </button>
+    </mat-dialog-actions>
+  </form>

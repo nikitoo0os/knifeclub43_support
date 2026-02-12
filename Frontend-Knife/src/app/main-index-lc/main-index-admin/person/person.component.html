@@ -1,0 +1,31 @@
+<form>
+  <mat-dialog-content>
+      <div class="inf_block">
+        <h5 class="text-center">Пользователь</h5>
+      </div>
+      <hr>
+      <mat-form-field>
+        <mat-label>Логин</mat-label>
+        <input matInput required [(ngModel)]="person.login" name="name">
+        <mat-icon matSuffix>person</mat-icon>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Пароль</mat-label>
+        <input matInput required [(ngModel)]="person.password" name="password">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Роль</mat-label>
+        <mat-select [(value)]="role" required>
+            <mat-option *ngFor="let role of roles" [value]="role">{{role.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+      <button cdkFocusInitial mat-button class="button-bron" (click)="onBronClick()">
+        Сохранить
+      </button>
+      <button mat-button (click)="onNoClick()">
+        Отменить
+      </button>
+  </mat-dialog-actions>
+</form>

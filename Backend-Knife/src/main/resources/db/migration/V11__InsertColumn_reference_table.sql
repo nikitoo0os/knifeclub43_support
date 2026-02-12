@@ -1,0 +1,4 @@
+CREATE SCHEMA IF NOT EXISTS knfc;
+
+ALTER TABLE knfc.reference
+ADD COLUMN reserv_duration INTEGER;

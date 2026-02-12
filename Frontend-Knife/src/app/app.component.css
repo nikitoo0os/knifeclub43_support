@@ -1,0 +1,41 @@
+footer {
+    @apply bg-gradient-to-t from-black to-gray-900 text-center py-10
+}
+footer .head a {
+    @apply text-white hover:text-orange-400 cursor-pointer
+}
+footer .main {
+    @apply mx-6 text-center grid-cols-1 grid justify-center gap-y-6
+}
+footer .main a {
+    @apply flex font-normal text-gray-200 mx-auto gap-1 cursor-pointer hover:text-orange-400
+}
+footer .head {
+    @apply flex gap-x-4 items-center justify-center mt-6
+}
+footer h5 {
+    @apply text-lg md:text-2xl text-white
+}
+footer h4 {
+    @apply text-base md:text-xl text-white
+}
+header {
+    z-index: 10;
+    background-color: rgba(72, 72, 72, 0.4);
+    left: 0;
+    right: 0;
+    top: 0;
+    position: fixed;
+    --tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+    --tw-shadow-colored: 0 25px 50px -12px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+header div {
+    @apply relative md:h-20 h-14 mx-auto px-5 flex items-center justify-between text-white max-w-[1280px]
+}
+ul {
+    @apply flex items-center sm:gap-5 gap-2
+}
+ul li {
+    @apply hover:text-orange-400 transition-colors text-base sm:text-lg font-semibold cursor-pointer
+}

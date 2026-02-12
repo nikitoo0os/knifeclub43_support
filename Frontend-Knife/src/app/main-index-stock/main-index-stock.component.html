@@ -1,0 +1,33 @@
+<div [@scrollAnimation]>
+  <div *ngFor="let ref of references" class="flex flex-col gap-y-3">
+    <h5 [@fadeInOut]>{{reference.name}}</h5>
+    <div>
+      <p [innerHTML]="descriptions" [@fadeInOut]></p>
+    </div>
+    <div class="flex gap-1" [@fadeInOut]>
+      <h1>Стоимость: от </h1><p>{{reference.price}} ₽</p>
+    </div>
+  </div>
+  <hr>
+  <div class="flex flex-col gap-y-3">
+      <h5>Бронирование:</h5>
+      <h1>Выберите и забронируйте свободное время, кликнув по нему. Бесплатная отмена бронирования по телефону.</h1>
+      <div class="z-[2]">
+        <div class="block my-1" *ngFor="let curDate of dateTimeArray; let j = index" [@fadeInOut]>
+          <div class="min-w-[140px] border-t border-gray-300">
+            <h1 [ngClass]="{'birthday_date': checkDay(curDate.date)}">{{ curDate.date | date:'d MMMM, EE' }}</h1>
+          </div>
+          <div class="gap-2">
+            <div *ngFor="let curTimeSlot of curDate.timeSlots; let i = index" class="inline-block mr-1 mb-1">
+              <button [ngClass]="{'red-button': checkDataAndValueExist(curDate.date, curTimeSlot)}" [disabled]="checkDataAndValueExist(curDate.date, curTimeSlot)" (click)="openDialog(i, j)">{{ curTimeSlot }}</button> 
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container z-[2]">
+        <button *ngIf="dateTimeArray.length < alldateTimeArray.length" (click)="loadMore()">
+          Показать еще
+        </button>
+      </div>
+  </div>
+</div>
