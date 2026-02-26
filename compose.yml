@@ -10,17 +10,11 @@ services:
     restart: always
     ports:
       - "3013:3013"
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
   knfc-backend:
     image: 'knfc-backend-spring-boot:2.0.0'
     build:
       context: Backend-Knife
     container_name: knfc-backend-spring-boot-2
-    restart: always
+    restart: no
     ports:
       - "8093:8093"
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
