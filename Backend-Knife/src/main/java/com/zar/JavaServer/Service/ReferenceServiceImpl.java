@@ -13,12 +13,15 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class ReferenceServiceImpl implements ReferenceService{
+
+    private static final ZoneId BUSINESS_TIME_ZONE = ZoneId.of("Europe/Moscow");
 
     private final ReservBlockRepository reservBlockRepository;
     private final ReferenceRepository referenceRepository;
@@ -138,7 +141,7 @@ public class ReferenceServiceImpl implements ReferenceService{
         reservationInfo.put("timeslots", reference.getTimeslots().stream().map(LocalTime::toString).collect(Collectors.toList()));
         reservationInfo.put("timeslotsHoliday", reference.getTimeslotsHoliday().stream().map(LocalTime::toString).collect(Collectors.toList()));
 
-        reservationInfo.put("date", LocalDate.now());
+        reservationInfo.put("date", LocalDate.now(BUSINESS_TIME_ZONE));
         reservationInfo.put("days_count", env.getProperty("application.days_count"));
         return reservationInfo;
     }
@@ -459,7 +462,7 @@ public class ReferenceServiceImpl implements ReferenceService{
     @Override
     public List<ReservReference> getAllReservReferencesByStartDateAndEndDate(Short idReference) { // Отображение забронированных услуг для клиента
         int days_count = Integer.parseInt(Objects.requireNonNull(env.getProperty("application.days_count")));
-        LocalDate datestart = LocalDate.now();
+        LocalDate datestart = LocalDate.now(BUSINESS_TIME_ZONE);
         LocalDate datefinish = datestart.plusDays(days_count+1);
         List<ReservReference> reservReferences = reservReferenceRepository.findByDateBetween(datestart, datefinish); // Забронированные услуги по интервалу даты
         List<ReservReference> reservReferences_itog = new ArrayList<>(reservReferences.stream()
@@ -571,15 +574,20 @@ public class ReferenceServiceImpl implements ReferenceService{
                 }
             }
 
-            LocalDate localDateBron = reservReference.getDateBron().toInstant()
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDate(); // Дата текущего бронирования
-            LocalTime localTimeBron = reservReference.getDateBron().toInstant()
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalTime(); // Время текущего бронирования
+            ZonedDateTime bookingMoment = ZonedDateTime.now(BUSINESS_TIME_ZONE);
+            LocalDate localDateBron = bookingMoment.toLocalDate(); // Дата текущего бронирования
+            LocalTime localTimeBron = bookingMoment.toLocalTime(); // Время текущего бронирования
             LocalTime timeEndBron; // Время последнего бронирования услуги
             LocalTime timeStartBron; // Время начала бронирования услуги
             LocalTime time_reservRef = LocalTime.of(Integer.parseInt(reservReference.getTime().split(":")[0]), Integer.parseInt(reservReference.getTime().split(":")[1])); // Получение LocalTime у брони
+
+            // Клиент не может создать бронь на прошедшую дату или уже наступивший слот.
+            // Эта проверка обязательна на сервере: список слотов на странице мог устареть,
+            // а запрос к API можно отправить напрямую, минуя интерфейс.
+            if (reservReference.getDate().isBefore(localDateBron) ||
+                    (reservReference.getDate().isEqual(localDateBron) && !time_reservRef.isAfter(localTimeBron))) {
+                return false;
+            }
 
             if (localDateBron.getDayOfWeek() == DayOfWeek.SATURDAY || localDateBron.getDayOfWeek() == DayOfWeek.SUNDAY) {
                 timeEndBron = LocalTime.parse(reservReference.getReference().getTimeEndHoliday());
@@ -590,7 +598,7 @@ public class ReferenceServiceImpl implements ReferenceService{
                 timeStartBron = LocalTime.parse(reservReference.getReference().getTimeStart());
             }
 
-            if (localDateBron.plusDays(1).getDayOfYear() == reservReference.getDate().getDayOfYear()) { // Проверка если текущая дата бронирования равна дате на которую забронировали услугу +1 день, то есть забронировали сегодня на завтра
+            if (localDateBron.plusDays(1).isEqual(reservReference.getDate())) { // Проверка если текущая дата бронирования равна дате на которую забронировали услугу +1 день, то есть забронировали сегодня на завтра
                 if (localTimeBron.isAfter(timeEndBron)) { // Проверяем во сколько забронировали, если после времени окончания услуги, то выводим false
                     if (timeStartBron.plusMinutes(120).isAfter(time_reservRef)) {
                         return null;
@@ -598,7 +606,7 @@ public class ReferenceServiceImpl implements ReferenceService{
                 }
             }
 
-            if (localDateBron.getDayOfYear() == reservReference.getDate().getDayOfYear()) { // Проверка если текущая дата бронирования равна дате на которую забронировали услугу, то есть забронировали сегодня утром на сегодня
+            if (localDateBron.isEqual(reservReference.getDate())) { // Проверка если текущая дата бронирования равна дате на которую забронировали услугу, то есть забронировали сегодня утром на сегодня
                 if (localTimeBron.isBefore(timeStartBron)) { // Проверяем во сколько забронировали, если до времени начала услуги, то выводим false
                     if (timeStartBron.plusMinutes(120).isAfter(time_reservRef)) {
                         return null;

@@ -111,11 +111,24 @@ export class MainIndexStockComponent implements OnInit {
   }
 
   checkDataAndValueExist(date: Date, value: string): boolean {
-    const foundItem = this.reservreferences.find(item => new Date(item.date!).getDate() == date.getDate() && item.time === value);
+    const foundItem = this.reservreferences.find(item => {
+      const reservationDate = new Date(item.date!);
+      return reservationDate.getFullYear() === date.getFullYear()
+        && reservationDate.getMonth() === date.getMonth()
+        && reservationDate.getDate() === date.getDate()
+        && item.time === value;
+    });
     if (foundItem) {
       return true;
     }
     else return false;
+  }
+
+  isPastTimeSlot(date: Date, timeSlot: string): boolean {
+    const [hours, minutes] = timeSlot.split(':').map(Number);
+    const slotDateTime = new Date(date);
+    slotDateTime.setHours(hours, minutes, 0, 0);
+    return slotDateTime.getTime() <= Date.now();
   }
 
   checkDay(date: Date): boolean {

@@ -114,13 +114,13 @@ export class ModalBronComponent implements OnInit {
             this.dialogRef.close();
           }
           else {
-            this._snackBar.open('У-пс! Ваше время занято, пожалуйста, выберите другое время бронирования!', "Закрыть", { duration: 10000 });
+            this._snackBar.open('У-пс! Это время уже недоступно, пожалуйста, выберите другое время бронирования!', "Закрыть", { duration: 10000 });
             //this.dialogRef.close();
           }
         });
       }
       else if (this.response_value == null) this._snackBar.open('У-пс! Это время можно забронировать только по т. +7 (8332) 79-94-74!', "Закрыть", { duration: 10000 });
-      else this._snackBar.open('У-пс! Ваше время занято, пожалуйста, выберите другое время бронирования!', "Закрыть", { duration: 10000 });
+      else this._snackBar.open('У-пс! Это время уже недоступно, пожалуйста, выберите другое время бронирования!', "Закрыть", { duration: 10000 });
     }
   }
 

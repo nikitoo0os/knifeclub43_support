@@ -19,7 +19,7 @@
           </div>
           <div class="gap-2">
             <div *ngFor="let curTimeSlot of curDate.timeSlots; let i = index" class="inline-block mr-1 mb-1">
-              <button [ngClass]="{'red-button': checkDataAndValueExist(curDate.date, curTimeSlot)}" [disabled]="checkDataAndValueExist(curDate.date, curTimeSlot)" (click)="openDialog(i, j)">{{ curTimeSlot }}</button> 
+              <button [ngClass]="{'red-button': checkDataAndValueExist(curDate.date, curTimeSlot)}" [disabled]="checkDataAndValueExist(curDate.date, curTimeSlot) || isPastTimeSlot(curDate.date, curTimeSlot)" (click)="openDialog(i, j)">{{ curTimeSlot }}</button>
             </div>
           </div>
         </div>
